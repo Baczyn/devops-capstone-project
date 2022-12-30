@@ -165,3 +165,13 @@ class TestAccountService(TestCase):
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         updated_account = resp.get_json()
         self.assertEqual(updated_account["name"], "Something Known") 
+
+    def test_update_account_not_found(self):
+        """It should Not Update an unexisting Account"""
+        # update the account
+        random_accoount_nr = 99
+        resp = self.client.put(f"{BASE_URL}/{random_accoount_nr}", json=[])
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+        error_info = resp.get_json()
+
+        self.assertEqual(error_info["message"], f"404 Not Found: Account with id [{random_accoount_nr}] could not be found.") 
