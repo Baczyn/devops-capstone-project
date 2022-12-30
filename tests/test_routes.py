@@ -148,13 +148,13 @@ class TestAccountService(TestCase):
     def test_list_all_accounts(self):
         """It should List all accounts"""
         nr_of_accounts = 3
-        accounts = self._create_accounts(nr_of_accounts)
+        self._create_accounts(nr_of_accounts)
         resp = self.client.get(BASE_URL)
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertEqual(len(data), nr_of_accounts)
 
-    #UPDATE TESTS
+    # UPDATE TESTS
     def test_update_account(self):
         """It should Update an existing Account"""
         # create an Account to update
@@ -167,7 +167,7 @@ class TestAccountService(TestCase):
         resp = self.client.put(f"{BASE_URL}/{new_account['id']}", json=new_account)
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         updated_account = resp.get_json()
-        self.assertEqual(updated_account["name"], "Something Known") 
+        self.assertEqual(updated_account["name"], "Something Known")
 
     def test_update_account_not_found(self):
         """It should Not Update an unexisting Account"""
@@ -177,7 +177,7 @@ class TestAccountService(TestCase):
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
         error_info = resp.get_json()
 
-        self.assertEqual(error_info["message"], f"404 Not Found: Account with id [{random_accoount_nr}] could not be found.") 
+        self.assertEqual(error_info["message"], f"404 Not Found: Account with id [{random_accoount_nr}] could not be found.")
 
     # DELETE
     def test_delete_account(self):
@@ -191,7 +191,7 @@ class TestAccountService(TestCase):
         resp = self.client.delete(BASE_URL)
         self.assertEqual(resp.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    #SECURITY
+    # SECURITY
     def test_security_headers(self):
         """It should return security headers"""
         response = self.client.get('/', environ_overrides=HTTPS_ENVIRON)
